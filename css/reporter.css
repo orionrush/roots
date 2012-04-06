@@ -1,4 +1,9 @@
-/* reporter */
+/* reporter 
+** based on the work of David Cochran
+** http://webdesign.tutsplus.com/tutorials/htmlcss-tutorials/a-basic-responsive-grid-plus-handy-css3-media-query-reporter/
+** enabled though app.css
+** as you can see it works but has rendering issues at the moment
+*/
 body:after {
 	content: "less than 320px";
 	font-size: 3em;
