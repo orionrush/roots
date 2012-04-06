@@ -291,13 +291,19 @@ function roots_attachment_link_class($html) {
 add_filter('wp_get_attachment_link', 'roots_attachment_link_class', 10, 1);
 
 // http://justintadlock.com/archives/2011/07/01/captions-in-wordpress
+
 function roots_caption($output, $attr, $content) {
-  /* We're not worried abut captions in feeds, so just return the output here. */
+
+	$output = apply_filters('roots_caption', '', $attr, $content);
+	if ( $output != '' )
+		return $output;
+
+  // We're not worried abut captions in feeds, so just return the output here. 
   if ( is_feed()) {
     return $output;
   }
 
-  /* Set up the default arguments. */
+  // Set up the default arguments. 
   $defaults = array(
     'id' => '',
     'align' => 'alignnone',
@@ -305,36 +311,37 @@ function roots_caption($output, $attr, $content) {
     'caption' => ''
   );
 
-  /* Merge the defaults with user input. */
+ // Merge the defaults with user input. 
   $attr = shortcode_atts($defaults, $attr);
 
-  /* If the width is less than 1 or there is no caption, return the content wrapped between the [caption]< tags. */
+  //If the width is less than 1 or there is no caption, return the content wrapped between the [caption]< tags. 
   if (1 > $attr['width'] || empty($attr['caption'])) {
     return $content;
   }
 
-  /* Set up the attributes for the caption <div>. */
+  // Set up the attributes for the caption <div>. 
   $attributes = (!empty($attr['id']) ? ' id="' . esc_attr($attr['id']) . '"' : '' );
   $attributes .= ' class="thumbnail wp-caption ' . esc_attr($attr['align']) . '"';
   $attributes .= ' style="width: ' . esc_attr($attr['width']) . 'px"';
 
-  /* Open the caption <div>. */
+  // Open the caption <div>. 
   $output = '<div' . $attributes .'>';
 
-  /* Allow shortcodes for the content the caption was created for. */
+  // Allow shortcodes for the content the caption was created for. 
   $output .= do_shortcode($content);
 
-  /* Append the caption text. */
+  // Append the caption text. 
   $output .= '<div class="caption"><p class="wp-caption-text">' . $attr['caption'] . '</p></div>';
 
-  /* Close the caption </div>. */
+  // Close the caption </div>. 
   $output .= '</div>';
 
-  /* Return the formatted, clean caption. */
+  // Return the formatted, clean caption. 
   return $output;
 }
 
 add_filter('img_caption_shortcode', 'roots_caption', 10, 3);
+
 
 
 // http://www.deluxeblogtips.com/2011/01/remove-dashboard-widgets-in-wordpress.html
