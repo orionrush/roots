@@ -230,7 +230,7 @@ function roots_gallery_shortcode($attr) {
   }
 
   if (empty($attachments)) {
-    return '';
+    return;
   }
 
   if (is_feed()) {
